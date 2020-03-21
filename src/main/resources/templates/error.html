@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ares</title>
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <script src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/demo01.css">
+
+
+</head>
+<body>
+<div th:replace="~{navigation.html :: header}"></div>
+<div class="jumbotron" style="margin-left: 150px;">
+    <h1>出错啦</h1>
+
+    <p th:text="${message}">服务器脑壳进水了，您要不先歇一会。</p>
+    <p><a class="btn btn-primary btn-lg" href="/" role="button">回到首页</a></p>
+</div>
+</body>
+</html>
+

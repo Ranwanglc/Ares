@@ -10,7 +10,9 @@
 [FastJson](https://mvnrepository.com/artifact/com.alibaba/fastjson)  
 #####字符转化json格式的快速解决方法，先引入依赖 
 [thymeleaf.maven](https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf/3.0.11.RELEASE)  
-[thymeleaf](https://www.thymeleaf.org/)   
+[thymeleaf](https://www.thymeleaf.org/)     
+[flyway ](https://flywaydb.org/)   
+[Lombok](https://projectlombok.org/)  
 #####前端模板引擎
 ###数据库的使用
 ##NO.1  

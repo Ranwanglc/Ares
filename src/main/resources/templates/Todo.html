@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ares</title>
+    <script src="js/jquery-3.4.1.min.js"></script>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/demo01.css">
+
+
+</head>
+<body>
+<div th:replace="~{navigation.html :: header}"></div>
+<div class="container-fluid main">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" >
+            <h2> <span class="glyphicon glyphicon-list" aria-hidden="true"></span>发现</h2>
+            <hr>
+            <div class="media" th:each="question:${questions}">
+                <div class="media-left">
+                    <a href="#">
+                        <img th:src="${question.user.avatarUrl}" class="media-object img-rounded " style="height: 38px;width: 38px" sty>
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading" th:text="${question.tittle}"> </h4>
+                    <span class="text-decs"> <span th:text="${question.commentCount}"></span>个评论 • <span th:text="${question.viewCount}"></span> 次浏览 • <spqn th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></spqn></span>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" >
+            <h3>热门话题</h3>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
