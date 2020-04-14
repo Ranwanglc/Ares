@@ -1,6 +1,9 @@
 package com.example.demo01.advice;
 
+import com.alibaba.fastjson.JSON;
+import com.example.demo01.dto.ResultDTO;
 import com.example.demo01.exception.CustomizeException;
+import com.example.demo01.exception.CustomzieErrorCode;
 import org.springframework.http.HttpStatus;
 
 
@@ -12,6 +15,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * controller 增强器
@@ -22,17 +28,43 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class CustomizeExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
-    ModelAndView handle(HttpServletRequest request, Throwable e, Model model) {
-        if(e instanceof CustomizeException)
+    ModelAndView handle(HttpServletRequest request, Throwable e, Model model, HttpServletResponse response)  {
+        String contentType = request.getContentType();
+        if("application/json".equals(contentType))
         {
-            model.addAttribute("message",e.getMessage());
+            ResultDTO resultDTO;
+            //return json
+            if (e instanceof CustomizeException) {
+                resultDTO= ResultDTO.errorOf((CustomizeException) e);
+            } else {
+
+                resultDTO= ResultDTO.errorOf(CustomzieErrorCode.SYS_ERROR);
+            }
+            try
+            {
+                response.setContentType("application/json");
+                response.setStatus(200);
+                response.setCharacterEncoding("utf-8");
+                PrintWriter writer = response.getWriter();
+                writer.write(JSON.toJSONString(resultDTO));
+                writer.close();
+            }
+            catch(IOException ioe)
+            {
+
+            }
+            return null;
         }
         else {
+            //return "error"
 
-            String str="服务器脑壳进水了，您要不先歇一会";
-            model.addAttribute("message",str);
+            if (e instanceof CustomizeException) {
+                model.addAttribute("message", e.getMessage());
+            } else {
+                model.addAttribute("message", CustomzieErrorCode.SYS_ERROR.getMessage());
+            }
+            return new ModelAndView("error");
         }
-        return new ModelAndView("error");
     }
 
 

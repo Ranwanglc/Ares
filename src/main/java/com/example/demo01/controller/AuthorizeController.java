@@ -17,6 +17,7 @@ import com.example.demo01.provider.GithubProvider;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -49,7 +50,8 @@ public class AuthorizeController {
     @GetMapping("/callback")
     public String callback(@RequestParam(name="code") String code,
                            @RequestParam(name="state") String state,
-                           HttpServletResponse response
+                           HttpServletResponse response,
+                           HttpServletRequest request
                            ) throws IOException {
         AccessTokenTDO accessTokenTDO = new AccessTokenTDO();
         accessTokenTDO.setClient_id(clientId);
@@ -71,6 +73,8 @@ public class AuthorizeController {
             Cookie cookie =new Cookie("token",token);
             cookie.setMaxAge(Integer.MAX_VALUE);
             response.addCookie(cookie);
+            HttpSession session=request.getSession();
+            session.setAttribute("user",user);
             return "redirect:/";
         }
         else{

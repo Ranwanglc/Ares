@@ -34,6 +34,8 @@
         <table  tableName="USER1" domainObjectName="User" ></table>
         <table  tableName="question" domainObjectName="Question" ></table>
         <table  tableName="comment" domainObjectName="Comment" ></table>
+        <table  tableName="thesis" domainObjectName="Thesis" ></table>
+        <table  tableName="notification" domainObjectName="Notification" ></table>
 
 
     </context>

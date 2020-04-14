@@ -1,9 +1,10 @@
 package com.example.demo01.controller;
 
 
-import com.example.demo01.mapper.EditMapper;
-import com.example.demo01.model.Thesis;
+import com.example.demo01.mapper.ThesisMapper;
+import com.example.demo01.model.ThesisWithBLOBs;
 import com.example.demo01.model.User;
+import com.example.demo01.service.EditService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -23,7 +24,7 @@ public class EditController {
 
 
     @Autowired(required=false)
-    private EditMapper editMapper;
+    private EditService editService;
 
 
 
@@ -66,15 +67,16 @@ public class EditController {
             model.addAttribute("error","用户未登录");
             return "edit";
         }
-        Thesis thesis = new Thesis();
-        thesis.setTittle(tittle);
-        thesis.setParagraph(paragraph);
-        thesis.setReference(reference);
-        thesis.setCreator(user.getId());
-        thesis.setGmt_create(System.currentTimeMillis());
-        thesis.setGmt_modified(thesis.getGmt_create());
+
+        ThesisWithBLOBs thesis1= new ThesisWithBLOBs();
+        thesis1.setTittle(tittle);
+        thesis1.setParagraph(paragraph);
+        thesis1.setReference(reference);
+        thesis1.setCreator(user.getId());
+        thesis1.setGmtCreate(System.currentTimeMillis());
+        thesis1.setGmtModified(thesis1.getGmtCreate());
         
-        editMapper.create(thesis);
+        editService.insert(thesis1);
 
         return "redirect:/";
     }

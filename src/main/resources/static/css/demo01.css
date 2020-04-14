@@ -20,7 +20,76 @@ body{
     font-weight: normal;
     color: #999;
 }
+.question-tittle{
+    margin-top: 25px;
+}
+.question-relate {
+    line-height: 20px;
+    font-size: 12px;
+    margin-left: 0;
+    list-style: none;
+    padding-left: 0;
+}
+.publish-tag-tab {
+    display: none;
+    margin-top: 10px;
+}
+.pp{}
 .demo01-menu{
+    margin-bottom: 15px;
     font-size: 13px;
     color:#999;
+}
+.comment-top{
+    margin: 10px 0;
+}
+.menu{
+    color:#999;
+    margin-top: 5px;
+}
+.menu .icon{
+    margin-right: 6px;
+    font-size: 15px;
+    cursor:pointer;
+}
+.menu .comment-icon{
+    font-size: 15px;
+    cursor:pointer;
+}
+.menu .comment-icon:hover{
+    color:#499ef3;
+}
+.menu .active{
+    color:#499ef3;
+}
+.menu .icon:hover{
+    color:#499ef3;
+}
+.float-right{
+    float: right;
+}
+.comments {
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+.comments-two {
+    border-radius: 7px;
+    margin-top: 10px;
+    border: 1px solid #eee;
+    padding-top: 15px;
+    margin-bottom: 15px;
+}
+.comments-two .btn{
+    margin: 10px 0;
+}
+.mar1{
+    margin-bottom: 10px;
+}
+.question-tag{
+    margin-left: 5px;
+}
+.imgtt{
+    width: 200px;
+    height: 195px;
 }

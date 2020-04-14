@@ -29,7 +29,13 @@
                     <h4 class="media-heading" >
                         <a th:href="@{'/question/'+${question.id}}" th:text="${question.tittle}"></a>
                     </h4>
-                    <span class="text-decs"> <span th:text="${question.commentCount}"></span>个评论 • <span th:text="${question.viewCount}"></span> 次浏览 • <spqn th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></spqn></span>
+                    <span class="text-decs"> <span th:text="${question.commentCount}"></span>个评论 •
+                        <span th:text="${question.viewCount}"></span> 次浏览 •
+                        <spqn th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></spqn> •
+                        <a th:href="@{'/publish/'+${question.id}}" class="demo01-menu" th:if="${session.user != null && session.user.id == question.getCreator()}">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true">编辑</span>
+                        </a>
+                    </span>
                 </div>
             </div>
             <nav aria-label="Page navigation">

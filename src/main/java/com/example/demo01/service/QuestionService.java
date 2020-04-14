@@ -10,6 +10,7 @@ import com.example.demo01.mapper.UserMapper;
 import com.example.demo01.model.Question;
 import com.example.demo01.model.QuestionExample;
 import com.example.demo01.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -46,7 +48,9 @@ public class QuestionService {
         paginationDTO.setPagination(totalCount,page,size);
         Integer offset =size*(page-1);
         List<QuestionDTO> questionDTOList=new ArrayList<>();
-        List<Question> questions=questionMapper.selectByExampleWithBLOBsWithRowbounds(new QuestionExample(),new RowBounds(offset,size));
+        QuestionExample example = new QuestionExample();
+        example.setOrderByClause("gmt_create desc");
+        List<Question> questions=questionMapper.selectByExampleWithBLOBsWithRowbounds(example,new RowBounds(offset,size));
 
         for (Question question : questions) {
             User user=userMapper.selectByPrimaryKey(question.getCreator());
@@ -61,7 +65,7 @@ public class QuestionService {
         return  paginationDTO;
     }
 
-    public PaginationDTO List(int id, Integer page, Integer size) {
+    public PaginationDTO List(Long id, Integer page, Integer size) {
         PaginationDTO paginationDTO= new PaginationDTO();
         QuestionExample questionExample=new QuestionExample();
         questionExample.createCriteria()
@@ -78,6 +82,7 @@ public class QuestionService {
         QuestionExample example = new QuestionExample();
         example.createCriteria()
                 .andCreatorEqualTo(id);
+        example.setOrderByClause("gmt_create desc");
         List<Question> questions=questionMapper.selectByExampleWithBLOBsWithRowbounds(example,new RowBounds(offset,size));
 
         paginationDTO.setPagination(totalCount,page,size);
@@ -93,7 +98,7 @@ public class QuestionService {
         return  paginationDTO;
     }
 
-    public QuestionDTO getByid(int id) {
+    public QuestionDTO getByid(Long id) {
         Question question=questionMapper.selectByPrimaryKey(id);
         if(question ==null)
         {
@@ -111,12 +116,17 @@ public class QuestionService {
         Question dbquestion=questionMapper.selectByPrimaryKey(question.getId());
         if(dbquestion == null)
         {
+            //创建
             question.setGmtCreate(System.currentTimeMillis());
+            question.setViewCount(0);
+            question.setCommentCount(0);
+            question.setLikeCount(0);
             question.setGmtModified(question.getGmtCreate());
             questionMapper.insertSelective(question);
         }
         else
         {
+            //更新
             question.setGmtModified(question.getGmtCreate());
             Question updatequestion =new Question();
             updatequestion.setGmtModified(System.currentTimeMillis());
@@ -134,10 +144,28 @@ public class QuestionService {
         }
     }
 
-    public void incView(int id) {
+    public void incView(Long id) {
         Question question= new Question();
         question.setId(id);
         question.setViewCount(1);
         questionExMapper.incView(question);
+    }
+
+    public List<QuestionDTO> selectRelated(QuestionDTO questionDTO) {
+        if (StringUtils.isBlank(questionDTO.getTag())) {
+            return new ArrayList<>();
+        }
+        String tags = questionDTO.getTag().replace('，', ',').replace(',', '|');
+        questionDTO.setTag(tags);
+        Question question=new Question();
+        question.setId(questionDTO.getId());
+        question.setTag(tags);
+        List<Question> list=questionExMapper.selectRelated(question);
+        List<QuestionDTO> collect = list.stream().map(q -> {
+            QuestionDTO questionDTO1 = new QuestionDTO();
+            BeanUtils.copyProperties(q,questionDTO1);
+            return questionDTO1;
+        }).collect(Collectors.toList());
+        return collect;
     }
 }
